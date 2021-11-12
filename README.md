@@ -1,4 +1,4 @@
-This example project illustrates how the Property Checker can be used in your project.
+This example project illustrates how the [Property Checker](https://github.com/flo2702/property-checker) can be used in your project.
 
 It is organized as follows:
 
