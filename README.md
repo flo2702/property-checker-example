@@ -15,15 +15,12 @@ The commands assume that the working directory contains the following:
 If your local configuaration differs from this, adjust the command as needed.
 
 ```
-cd property-types/property-checker-tutorial
+cd property-checker-tutorial
 ./gradlew assemble
 cd ..
 
-property-checker/checker-framework/bin/javac \
--cp property-checker/build/libs/property-checker.jar:\
-property-checker-tutorial/build/libs/property-checker-tutorial.jar:\
-property-checker/checker-framework/dist/checker.jar:\
-property-checker/checker-framework/dist/checker-dist.jar \
+property-checker/javac \
+-cp property-checker/property-checker.jar:property-checker-tutorial/build/libs/property-checker-tutorial.jar \
 -processor edu.kit.iti.checker.property.checker.PropertyChecker \
 property-checker-tutorial/src/main/java/*/*.java \
 -APropertyChecker_inDir=property-checker-tutorial/src/main/java \
@@ -34,10 +31,11 @@ property-checker-tutorial/src/main/java/*/*.java \
 
 The command is made up of the following parts:
 
-* `-cp` specifies the classpath, which must contain the Property Checker and the Checker Framework, but also the `qual` package from our project, hence the jar from our project is included.
+* `-cp` specifies the compilation classpath, which must contain the Property Checker and the `qual` package from our project, hence both `property-checker.jar` and `property-checker-tutorial.jar`. The correct version of the Checker Framework needed by the Property Checker is included in `property-checker.jar` and should not be included separately.
 * `-processor` specifies the checker(s) to use, in our case the Property Checker
 * The line after that gives the files which should be checked.
 * `-APropertyChecker_inDir` gives the root directory for our project's source code. This may seen redundant with the previous line, but it is necessary for the Property Checker to know not just the files it should check, but also the file/package structure of the project.
-* `-APropertyChecker_ourDir` gives the directory the JML translation should be written to.
+* `-APropertyChecker_outDir` gives the directory the JML translation should be written to.
+* `-APropertyChecker_lattices` gives the files containing the definiton for the property qualifier hierarchy. If multiple hierarchies are specified, the files should be separated by `,`.
 * `-APropertyChecker_qualPkg` gives the fully qualified name of the `qual` package.
 
